@@ -2,6 +2,8 @@ from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.Alphabet import generic_dna, generic_rna, generic_protein
 import gtk
+
+#This functions returns number of repetitions of txt in the pattern
 def kmp(pat, txt):
 	M = len(pat)
 	N = len(txt)
@@ -25,6 +27,7 @@ def kmp(pat, txt):
 			else:
 				i += 1
 	return matches
+
 def computeLPSArray(pat, M, lps):
 	len = 0
  
@@ -44,7 +47,7 @@ def computeLPSArray(pat, M, lps):
 				lps[i] = 0
 				i += 1
 
-#
+
 #put everything that is related to graphics in this class
 class gtkthings:
 	def file_browser(self, widget):
@@ -91,18 +94,30 @@ class gtkthings:
 		cn = tmp.count("C")
 		tn = tmp.count("T")
 		total = an + gn + cn + tn
-		l[1].set_text("Complement : " + str(Seq(dna_seq.get_text(), generic_dna).complement()))
-		l[2].set_text("Reverse Complement : " + str(Seq(dna_seq.get_text(), generic_dna).reverse_complement()))
-		l[3].set_text("Transcription : " + str(Seq(dna_seq.get_text(), generic_dna).transcribe()))
-		l[4].set_text("Reverse Transcription : " + str(Seq(dna_seq.get_text(), generic_rna).back_transcribe()))
-		l[5].set_text("Translation : " + str(Seq(dna_seq.get_text(), generic_dna).translate(stop_symbol = " | ")))
-		l[6].set_text("Melting Temperature : " + str(4 * dna_seq.get_text().count("GC") + 2 * dna_seq.get_text().count('AT')))
-		l[7].set_text("GC / AT content : " + str(dna_seq.get_text().count("GC")) + ' / ' + str(dna_seq.get_text().count("AT")))
-		l[8].set_text("Molecular Weight : " + str(329.2 * gn + an * 313.2 + 304.2 * tn + 289.2 * cn))
+		l[1].set_text("Complement : " +
+				 str(Seq(dna_seq.get_text(), generic_dna).complement()))
+		l[2].set_text("Reverse Complement : " +
+				 str(Seq(dna_seq.get_text(), generic_dna).reverse_complement()))
+		l[3].set_text("Transcription : " + 
+				 str(Seq(dna_seq.get_text(), generic_dna).transcribe()))
+		l[4].set_text("Reverse Transcription : " + 
+				str(Seq(dna_seq.get_text(), generic_rna).back_transcribe()))
+		l[5].set_text("Translation : " + 
+				str(Seq(dna_seq.get_text(), generic_dna).translate(stop_symbol = " | ")))
+		l[6].set_text("Melting Temperature : " + 
+				str(4 * dna_seq.get_text().count("GC") +
+				 2 * dna_seq.get_text().count('AT')))
+		l[7].set_text("GC / AT content : " +
+					 str(dna_seq.get_text().count("GC")) +
+					 ' / ' + str(dna_seq.get_text().count("AT")))
+		l[8].set_text("Molecular Weight : " + 
+					 str(329.2 * gn + an * 313.2 + 304.2 * tn + 289.2 * cn))
 		l[9].set_text("Percentage A : " + str(an*100.0/total))
 		l[10].set_text("Percentage T : " + str(tn*100.0/total))
 		l[11].set_text("Percentage G : " + str(gn*100.0/total))
 		l[12].set_text("Percentage C : " + str(cn*100.0/total))
+
+#return a page consiting of DNA transcripations, translations, etc etc
 	def page2(self):
 		vertical_alignment = gtk.VBox(False, 0)
 		image_box = gtk.HBox(False, 0)
@@ -184,7 +199,7 @@ class gtkthings:
 		openbox = gtk.HBox(False, 0)
 		self.text = gtk.Entry()
 		openbox.pack_start(self.text, True, True, 5)
-		button = gtk.Button("Open..")
+		button = gtk.Button("Open..", gtk.STOCK_OPEN)
 		button.connect("clicked", self.file_browser)
 		self.text.set_text("--No File Selected--")
 		openbox.pack_start(button, False, False, 0)
@@ -214,7 +229,7 @@ class gtkthings:
 		vertical_alignment.pack_start(frame, False, False, 5)
 		#a box of quit and process
 		lastbox = gtk.HBox(False, 0)
-		process_button = gtk.Button("Find")
+		process_button = gtk.Button("Find",gtk.STOCK_FIND)
 		process_button.connect("clicked", self.dna_process)
 		quit_button = gtk.Button("Quit", gtk.STOCK_QUIT)
 		quit_button.connect("clicked", gtk.main_quit)
